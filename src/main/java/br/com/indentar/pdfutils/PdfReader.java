@@ -23,7 +23,7 @@ import org.apache.pdfbox.text.PDFTextStripperByArea;
  */
 public class PdfReader {
 
-    private File fileOrDirectory;
+    private final File fileOrDirectory;
 
     public PdfReader(File fileOrDirectory) {
         this.fileOrDirectory = fileOrDirectory;
@@ -33,15 +33,18 @@ public class PdfReader {
         this.fileOrDirectory = new File(fileOrDirectory);
     }
 
-    public void iniciar() {
-        String pastaBoletos = "G:\\INDENTAR\\CLIENTES\\SGW\\SANTA-00823189000112\\Anne- verificação de boletos enviados";
-        File FilePastaBoletos = new File(pastaBoletos);
-
-        String[] extensions = {"pdf"};
-        Iterator<File> listFilesExtension = FileUtils.iterateFiles(fileOrDirectory, extensions, true);
-        while (listFilesExtension.hasNext()) {
-            File next = listFilesExtension.next();
+    public List<String> lerArvsPasta(String filePdf, String startWith) {
+        List<String> listInfByStartInf = new ArrayList<>();
+        if (fileOrDirectory.isDirectory()) {
+            String[] extensions = {"pdf"};
+            Iterator<File> fileIterator = FileUtils.iterateFiles(fileOrDirectory, extensions, true);
+            while (fileIterator.hasNext()) {
+                String findByStartInf = new PdfReader(fileIterator.next())
+                        .findByStartInf(startWith);
+                listInfByStartInf.add(findByStartInf);
+            }
         }
+        return listInfByStartInf;
 
     }
 
@@ -64,7 +67,6 @@ public class PdfReader {
 
     public String getAsText() {
 
-        List<String> lineList = new ArrayList<>();
         try (PDDocument document = PDDocument.load(fileOrDirectory)) {
 
             document.getClass();
