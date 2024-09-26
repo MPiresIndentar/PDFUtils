@@ -33,19 +33,26 @@ public class PdfReader {
         this.fileOrDirectory = new File(fileOrDirectory);
     }
 
-    public List<String> lerArvsPasta(String filePdf, String startWith) {
-        List<String> listInfByStartInf = new ArrayList<>();
-        if (fileOrDirectory.isDirectory()) {
-            String[] extensions = {"pdf"};
-            Iterator<File> fileIterator = FileUtils.iterateFiles(fileOrDirectory, extensions, true);
-            while (fileIterator.hasNext()) {
-                String findByStartInf = new PdfReader(fileIterator.next())
-                        .findByStartInf(startWith);
+    public List<String> EncontrarReferenciaEmArquivo(String filePdf, String startWith) {
+        try {
+            List<String> listInfByStartInf = new ArrayList<>();
+            if (fileOrDirectory.isDirectory()) {
+                String[] extensions = {"pdf"};
+                Iterator<File> fileIterator = FileUtils.iterateFiles(fileOrDirectory, extensions, true);
+                while (fileIterator.hasNext()) {
+                    String findByStartInf = new PdfReader(fileIterator.next())
+                            .findByStartInf(startWith);
+                    listInfByStartInf.add(findByStartInf);
+                }
+            } else {
+                String findByStartInf = new PdfReader(filePdf).findByStartInf(startWith);
                 listInfByStartInf.add(findByStartInf);
             }
+            return listInfByStartInf;
+        } catch (Exception ex) {
+            Logger.getLogger(PdfReader.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        return listInfByStartInf;
-
     }
 
     public String findByStartInf(String startInf) {

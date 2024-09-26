@@ -46,11 +46,11 @@ public class PdfReaderTest {
      * Test of iniciar method, of class PdfReader.
      */
     @org.junit.Test
-    public void testLerArvPasta() {
+    public void testEncontrarReferenciaEmArquivo() {
         System.out.println("identifica Arvivo");
-        String filePdf = "C:\\Users\\pcmix\\Downloads\\pdfs-boleto-20240925T155725Z-001\\pdfs-boleto";
+        String filePdf = "C:\\Users\\pcmix\\Downloads\\pdfs-boleto-20240925T155725Z-001\\pdfs-boleto\\boleto-ABEL_PEREIRA_DE_OLIVEIRA_03_01_2025NF429(1).pdf";
         PdfReader instance = new PdfReader(filePdf);
-        List<String> result = instance.lerArvsPasta(filePdf, "Ref. ");
+        List<String> result = instance.EncontrarReferenciaEmArquivo(filePdf, "Ref. ");
         result.forEach(inf -> System.out.println(inf));
         System.out.println("Arvivo Identificado");
     }
