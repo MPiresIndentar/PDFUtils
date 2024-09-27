@@ -33,6 +33,8 @@ public class PdfReader {
         this.fileOrDirectory = new File(fileOrDirectory);
     }
 
+
+
     public List<String> EncontrarReferenciaEmArquivo(String filePdf, String startWith) {
         try {
             List<String> listInfByStartInf = new ArrayList<>();
@@ -42,6 +44,7 @@ public class PdfReader {
                 while (fileIterator.hasNext()) {
                     String findByStartInf = new PdfReader(fileIterator.next())
                             .findByStartInf(startWith);
+
                     listInfByStartInf.add(findByStartInf);
                 }
             } else {
@@ -55,10 +58,24 @@ public class PdfReader {
         }
     }
 
+    public boolean BolleanMontandoQuery() {
+        boolean cfgMontaQuery = false;
+        return cfgMontaQuery;
+    }
+
+    public String montaQuery(String line) {
+        String query = "UPDATE where " + line;
+        return query;
+    }
+
     public String findByStartInf(String startInf) {
         List<String> readLines = readLines();
         for (String line : readLines) {
             if (line.startsWith(startInf)) {
+                if (BolleanMontandoQuery()) {
+                    line = montaQuery(line);
+                }
+                
                 return line;
             }
         }
@@ -98,5 +115,7 @@ public class PdfReader {
         return "";
 
     }
+
+ 
 
 }
