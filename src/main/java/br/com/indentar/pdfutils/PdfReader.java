@@ -23,7 +23,7 @@ import org.apache.pdfbox.text.PDFTextStripperByArea;
  */
 public class PdfReader {
 
-    private final File fileOrDirectory;
+    private File fileOrDirectory;
 
     public PdfReader(File fileOrDirectory) {
         this.fileOrDirectory = fileOrDirectory;
@@ -33,22 +33,19 @@ public class PdfReader {
         this.fileOrDirectory = new File(fileOrDirectory);
     }
 
-
-
-    public List<String> EncontrarReferenciaEmArquivo(String filePdf, String startWith) {
+    public List<String> encontrarReferenciaEmArquivo(String startWith) {
         try {
             List<String> listInfByStartInf = new ArrayList<>();
             if (fileOrDirectory.isDirectory()) {
                 String[] extensions = {"pdf"};
                 Iterator<File> fileIterator = FileUtils.iterateFiles(fileOrDirectory, extensions, true);
                 while (fileIterator.hasNext()) {
-                    String findByStartInf = new PdfReader(fileIterator.next())
-                            .findByStartInf(startWith);
-
+                    fileOrDirectory = fileIterator.next();
+                    String findByStartInf = findByStartInf(startWith);
                     listInfByStartInf.add(findByStartInf);
                 }
             } else {
-                String findByStartInf = new PdfReader(filePdf).findByStartInf(startWith);
+                String findByStartInf = findByStartInf(startWith);
                 listInfByStartInf.add(findByStartInf);
             }
             return listInfByStartInf;
@@ -58,24 +55,10 @@ public class PdfReader {
         }
     }
 
-    public boolean BolleanMontandoQuery() {
-        boolean cfgMontaQuery = false;
-        return cfgMontaQuery;
-    }
-
-    public String montaQuery(String line) {
-        String query = "UPDATE where " + line;
-        return query;
-    }
-
     public String findByStartInf(String startInf) {
         List<String> readLines = readLines();
         for (String line : readLines) {
             if (line.startsWith(startInf)) {
-                if (BolleanMontandoQuery()) {
-                    line = montaQuery(line);
-                }
-                
                 return line;
             }
         }
@@ -115,7 +98,5 @@ public class PdfReader {
         return "";
 
     }
-
- 
 
 }
