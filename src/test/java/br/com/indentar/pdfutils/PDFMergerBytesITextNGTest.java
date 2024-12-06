@@ -5,6 +5,7 @@
 package br.com.indentar.pdfutils;
 
 import br.com.indentar.pdfutils.merge.PDFMergerBytesIText;
+import br.com.indentar.pdfutils.merge.exceptions.PdfMergeException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,9 +47,11 @@ public class PDFMergerBytesITextNGTest {
             String base64Pdf1 = impressaoBancoInterBase64();
             String base64Pdf2 = impressaoBancoInterBase64();
             PDFMergerBytesIText instance = new PDFMergerBytesIText();
-            byte[] result = instance.mergePdfBytes(base64Pdf1, base64Pdf2);
+            byte[] result = PDFMergerBytesIText.mergePdfBytesBase64(base64Pdf1, base64Pdf2);
             createTempFile(result, "boleto-inter-mesclado");
         } catch (IOException ex) {
+            Logger.getLogger(PDFMergerBytesITextNGTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PdfMergeException ex) {
             Logger.getLogger(PDFMergerBytesITextNGTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
