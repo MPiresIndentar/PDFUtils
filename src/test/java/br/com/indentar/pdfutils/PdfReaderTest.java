@@ -4,18 +4,16 @@
  */
 package br.com.indentar.pdfutils;
 
-import java.io.File;
+import br.com.indentar.pdfutils.reader.PdfReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import static org.junit.Assert.*;
-import org.junit.Test;
-import java.util.Iterator;
-import org.apache.commons.io.FileUtils;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.testng.Assert.fail;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 
 /**
  *
@@ -26,13 +24,7 @@ public class PdfReaderTest {
     public PdfReaderTest() {
     }
 
-    @org.junit.Before
-    public void setUp() throws Exception {
-    }
-
-    @org.junit.After
-    public void tearDown() throws Exception {
-    }
+ 
 
     @BeforeClass
     public static void setUpClass() {
@@ -45,7 +37,7 @@ public class PdfReaderTest {
     /**
      * Test of iniciar method, of class PdfReader.
      */
-    @org.junit.Test
+    @Test
     public void testEncontrarReferenciaEmArquivo() {
         System.out.println("identifica Arvivo");
         String filePdf = "G:\\INDENTAR\\CLIENTES\\SGW\\SANTA-00823189000112\\Anne- verificação de boletos enviados\\pdfs-boleto-20240925T155725Z-001\\pdfs-boleto";
@@ -59,7 +51,7 @@ public class PdfReaderTest {
     /**
      * Test of readLines method, of class PdfReader.
      */
-    @org.junit.Test
+    @Test
     public void testReadLines() {
         System.out.println("readLinesTest");
         String filePdf = "C:\\Users\\pcmix\\Downloads\\pdfs-boleto-20240925T155725Z-001\\pdfs-boleto\\boleto-ADELSON_SILVA_MENDONCA_EPP_23_11_2024NF43097B.pdf";
