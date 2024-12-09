@@ -6,52 +6,62 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 public class PDFMergerBytesIText {
 
-    public static byte[] mergePdfBytesBase64(String base64Pdf1, String base64Pdf2) throws PdfMergeException {
+    public static byte[] mergePdfStringBase64(List<String> listPdfByteBase64) throws PdfMergeException {
         // Decodificando os bytes do Base64
-        byte[] bytesPdf1 = Base64.getDecoder().decode(base64Pdf1);
-        byte[] bytesPdf2 = Base64.getDecoder().decode(base64Pdf2);
-        return mergePdfBytes(bytesPdf1, bytesPdf2);
+        List<byte[]> listPdfBytesDecode = new ArrayList<>();
+        for (String stringPdfBase64 : listPdfByteBase64) {
+            listPdfBytesDecode.add(Base64.getDecoder().decode(stringPdfBase64));
+        }
+        return mergePdfBytes(listPdfBytesDecode);
+    }
+    public static byte[] mergePdfBytesBase64(List<byte[]> listPdfByteBase64) throws PdfMergeException {
+        // Decodificando os bytes do Base64
+        List<byte[]> listPdfBytesDecode = new ArrayList<>();
+        for (byte[] bytesPdfBase64 : listPdfByteBase64) {
+            listPdfBytesDecode.add(Base64.getDecoder().decode(bytesPdfBase64));
+        }
+        return mergePdfBytes(listPdfBytesDecode);
     }
 
-    public static byte [] mergePdfBytesBase64(byte[] base64Pdf1, byte[] base64Pdf2) throws PdfMergeException {
-        // Decodificando os bytes do Base64
-        byte[] bytesPdf1 = Base64.getDecoder().decode(base64Pdf1);
-        byte[] bytesPdf2 = Base64.getDecoder().decode(base64Pdf2);
-        return mergePdfBytes(bytesPdf1, bytesPdf2);
-    }
-
-    public static byte[] mergePdfBytes(byte[] bytesPdf1, byte[] bytesPdf2) throws PdfMergeException {
+    public static byte[] mergePdfBytes(List<byte[]> listPdfByte) throws PdfMergeException {
         try {
-            // Lendo os PDFs a partir de bytes
-            PdfReader reader1 = new PdfReader(new ByteArrayInputStream(bytesPdf1));
-            PdfReader reader2 = new PdfReader(new ByteArrayInputStream(bytesPdf2));
-
             // Criando um fluxo para o PDF final
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             PdfWriter writer = new PdfWriter(outputStream);
 
             try (PdfDocument mergedPdf = new PdfDocument(writer)) {
-                PdfDocument pdf1 = new PdfDocument(reader1);
-                PdfDocument pdf2 = new PdfDocument(reader2);
+                for (byte[] pdfBytes : listPdfByte) {
+                    // Lendo os PDFs a partir dos bytes
+                    PdfReader reader = new PdfReader(new ByteArrayInputStream(pdfBytes));
+                    PdfDocument pdfDocument = new PdfDocument(reader);
 
-                // Copiando as páginas de ambos os PDFs
-                pdf1.copyPagesTo(1, pdf1.getNumberOfPages(), mergedPdf);
-                pdf2.copyPagesTo(1, pdf2.getNumberOfPages(), mergedPdf);
+                    // Copiando todas as páginas para o PDF mesclado
+                    pdfDocument.copyPagesTo(1, pdfDocument.getNumberOfPages(), mergedPdf);
 
-                // Fechando documentos
-                pdf1.close();
-                pdf2.close();
+                    // Fechando o documento individual
+                    pdfDocument.close();
+                }
             }
 
             // Retornando os bytes do PDF mesclado
             return outputStream.toByteArray();
         } catch (Exception e) {
-            Object[] request = {bytesPdf1, bytesPdf2};
-            throw new PdfMergeException(request, "Erro ao mesclar pdf", 600, null, null, null, null, e);
+            throw new PdfMergeException(
+                    listPdfByte.toArray(),
+                    "Erro ao mesclar PDFs",
+                    600,
+                    null,
+                    null,
+                    null,
+                    null,
+                    e
+            );
         }
     }
 

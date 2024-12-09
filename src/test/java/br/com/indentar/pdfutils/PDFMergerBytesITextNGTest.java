@@ -9,6 +9,8 @@ import br.com.indentar.pdfutils.merge.exceptions.PdfMergeException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,14 +43,17 @@ public class PDFMergerBytesITextNGTest {
      * Test of mergePdfBytes method, of class PDFMergerBytesIText.
      */
     @org.testng.annotations.Test
-    public void testMergePdfBytes() {
+    public void testMergePdfStringBase64() {
         try {
-            System.out.println("mergePdfBytes");
+            System.out.println("mergePdfStringBase64");
             String base64Pdf1 = impressaoBancoInterBase64();
             String base64Pdf2 = impressaoBancoInterBase64();
-            PDFMergerBytesIText instance = new PDFMergerBytesIText();
-            byte[] result = PDFMergerBytesIText.mergePdfBytesBase64(base64Pdf1, base64Pdf2);
-            createTempFile(result, "boleto-inter-mesclado");
+            List<String>listStringPdfBase64=new ArrayList<>();
+            listStringPdfBase64.add(base64Pdf1);
+            listStringPdfBase64.add(base64Pdf2);
+            byte[] result = PDFMergerBytesIText.mergePdfStringBase64(listStringPdfBase64);
+            File createTempFile = createTempFile(result, "boleto-inter-mesclado");
+            System.out.println(createTempFile);
         } catch (IOException ex) {
             Logger.getLogger(PDFMergerBytesITextNGTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PdfMergeException ex) {
