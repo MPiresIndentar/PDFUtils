@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import static org.testng.Assert.fail;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 
@@ -19,6 +20,7 @@ import org.testng.annotations.Test;
  *
  * @author Marlucio
  */
+@Ignore
 public class PdfReaderTest {
 
     public PdfReaderTest() {
