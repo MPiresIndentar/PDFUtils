@@ -23,6 +23,8 @@ import org.apache.pdfbox.text.PDFTextStripperByArea;
  */
 public class PdfReader {
 
+    private String pdfPath;
+
     private File fileOrDirectory;
 
     public PdfReader(File fileOrDirectory) {
@@ -96,7 +98,48 @@ public class PdfReader {
             Logger.getLogger(PdfReader.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
+    }
 
+    public void definePdfPath(String pdfPath) throws Exception {
+        if(pdfPath.isEmpty()) throw new Exception("pdfPath is empty");
+        this.pdfPath = pdfPath;
+    }
+
+    /**
+     * Lé o Resumo do pdf, O Resumo inicia com "01. Resumo"
+     * @return String, devolve o conteúdo encontrado
+     * @throws Exception, lanã excessão se não foi possivel concluir a operação.
+     */
+    public String lerResumo() throws Exception {
+
+        try (PDDocument document = PDDocument.load(new File(pdfPath))) {
+            PDFTextStripper pdfTextStripper = new PDFTextStripper();
+            String text = pdfTextStripper.getText(document);
+
+            return extractAfterTitle(text, "01. Resumo");
+
+        } catch (IOException e) {
+            throw new Exception("Falha ao ler pdf: " + e.getMessage());
+        }
+    }
+
+    private String extractAfterTitle(String text, String title) {
+        String[] lines = text.split("\n");
+        StringBuilder content = new StringBuilder();
+        boolean foundTitle = false;
+
+        for (String line : lines) {
+            if (foundTitle) {
+                if (line.trim().startsWith("02. ")) break;
+
+                content.append(line).append("\n");
+            }
+            if (line.trim().equalsIgnoreCase(title)) {
+                foundTitle = true;
+            }
+        }
+
+        return content.toString().trim();
     }
 
 }
