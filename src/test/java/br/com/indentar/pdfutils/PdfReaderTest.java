@@ -59,7 +59,7 @@ public class PdfReaderTest {
         String filePdf = "C:\\Users\\pcmix\\Downloads\\pdfs-boleto-20240925T155725Z-001\\pdfs-boleto\\boleto-ADELSON_SILVA_MENDONCA_EPP_23_11_2024NF43097B.pdf";
         PdfReader instance = new PdfReader(filePdf);
         List<String> expResult = new ArrayList<>();
-        List<String> result = instance.readLines();
+        List<String> result = instance.getLinhas();
         System.out.println("readLines");
     }
 
@@ -72,7 +72,7 @@ public class PdfReaderTest {
         String startInf = "Ref. N";
         String filePdf = "G:\\INDENTAR\\CLIENTES\\SGW\\SANTA-00823189000112\\Anne- verificação de boletos enviados\\pdfs-boleto-20240925T155725Z-001\\pdfs-boleto";
         PdfReader instance = new PdfReader(filePdf);
-        String result = instance.findByStartInf(startInf);
+        String result = instance.getLinhaQueComecaCom(startInf);
         List<String> listInf = ExtractorBoleto.extract(result);
         System.out.println(listInf.get(0) + ";" + listInf.get(1));
         System.out.println(result);
@@ -86,7 +86,7 @@ public class PdfReaderTest {
         System.out.println("getAsTextTest");
         String filePdf = "C:\\Users\\pcmix\\Downloads\\pdfs-boleto-20240925T155725Z-001\\pdfs-boleto";
         PdfReader instance = new PdfReader(filePdf);
-        String result = instance.getAsText();
+        String result = instance.getConteudoDoArquivoComoTexto();
         System.out.println("getAsText!");
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
