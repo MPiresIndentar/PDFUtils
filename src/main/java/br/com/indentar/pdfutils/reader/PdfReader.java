@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -75,6 +76,18 @@ public class PdfReader {
        return getLinhas().stream() .filter(it -> it.startsWith(busca))
                 .findFirst()
                 .orElse(null);
+    }
+    
+
+    public String linhaUnica(String busca) {
+        List<String> linhas = getLinhas();
+       
+        String linhaUnica = "";
+        
+        for(String linha: linhas){
+          linhaUnica =  linhaUnica.concat(" ").concat(linha);
+        }
+    return linhaUnica;
     }
 
        /**

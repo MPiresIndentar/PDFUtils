@@ -6,6 +6,10 @@ package br.com.indentar.pdfutils.reader;
 
 import java.io.File;
 import java.util.List;
+import org.testng.Assert;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -64,6 +68,33 @@ public class PdfReaderNGTest {
         String result = instance.getLinhaQueComecaCom(startInf);
         System.out.println(result);
     }
+    
+        @Test
+    public void testGetLinhasQueComecaCom() {
+        
+        String text = "SMH SHS SUPERRR C3L 60S LOTE:1MS12B2649 TERMO:TC 0";
+         
+         String pdf = "C:\\Users\\pcmix\\Documents\\DELETAVEIS\\PDF_GERADOS0.pdf";
+         PdfReader pdfreader = new PdfReader(pdf);
+         String linhaRecuperada = pdfreader.linhaUnica(text);
+         
+        assertNotNull(linhaRecuperada);
+    }
+    
+     @Test
+     void capturaTextoQuebrado(){
+         String text = "SMH SHS SUPERRR C3L 60S LOTE:1MS12B2649 TERMO:TC 0";
+         
+         String pdf = "C:\\Users\\pcmix\\Documents\\DELETAVEIS\\PDF_GERADOS0.pdf";
+         PdfReader pdfreader = new PdfReader(pdf);
+         
+        String linhaRecuperada = pdfreader.linhaUnica(text);
+         
+        String textLowerTrimmed = text.toLowerCase().replace(" ","");
+        String linhaRecuperadaLowerTrimmed = linhaRecuperada.toLowerCase().replace(" ", "");
+        
+        assertTrue(linhaRecuperadaLowerTrimmed.contains(textLowerTrimmed));
+     }
 
 
     /**
