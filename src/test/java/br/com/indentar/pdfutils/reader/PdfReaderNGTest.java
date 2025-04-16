@@ -76,7 +76,7 @@ public class PdfReaderNGTest {
          
          String pdf = "C:\\Users\\pcmix\\Documents\\DELETAVEIS\\PDF_GERADOS0.pdf";
          PdfReader pdfreader = new PdfReader(pdf);
-         String linhaRecuperada = pdfreader.linhaUnica(text);
+         String linhaRecuperada = pdfreader.linhaUnica();
          
         assertNotNull(linhaRecuperada);
     }
@@ -88,7 +88,7 @@ public class PdfReaderNGTest {
          String pdf = "C:\\Users\\pcmix\\Documents\\DELETAVEIS\\PDF_GERADOS0.pdf";
          PdfReader pdfreader = new PdfReader(pdf);
          
-        String linhaRecuperada = pdfreader.linhaUnica(text);
+        String linhaRecuperada = pdfreader.linhaUnica();
          
         String textLowerTrimmed = text.toLowerCase().replace(" ","");
         String linhaRecuperadaLowerTrimmed = linhaRecuperada.toLowerCase().replace(" ", "");

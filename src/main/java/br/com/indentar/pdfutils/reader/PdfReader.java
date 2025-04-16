@@ -78,8 +78,7 @@ public class PdfReader {
                 .orElse(null);
     }
     
-
-    public String linhaUnica(String busca) {
+    public String linhaUnica() {
         List<String> linhas = getLinhas();
        
         String linhaUnica = "";
